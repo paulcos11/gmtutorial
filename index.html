@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="js/bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="elements/login-element.html"/>
+    <link rel="import" href="elements/signup-element.html"/>
+    <link rel="import" href="js/bower_components/iron-pages/iron-pages.html">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+    <meta charset="UTF-8">
+
+</head>
+<body>
+
+<template is="dom-bind">
+    <iron-pages selected="{{selected}}">
+        <div>
+            <login-element id="login_component"></login-element>
+        </div>
+        <div>
+            <signup-element id="signup_component"></signup-element>
+        </div>
+    </iron-pages>
+</template>
+
+<core-header-panel flex>
+    <core-toolbar id="mainheader">
+        <span flex></span>
+    </core-toolbar>
+    <div id="content">
+    </div>
+</core-header-panel>
+
+<script>
+    document.addEventListener('WebComponentsReady', function () {
+        var template = document.querySelector('template[is="dom-bind"]');
+        template.selected = 0; // selected is an index by default
+
+        template.$.login_component.addEventListener('changePage', function () {
+            template.selected = 1;
+        });
+
+        template.$.signup_component.addEventListener('goSignin', function () {
+            template.selected = 0;
+        });
+
+    });
+</script>
+
+
+</body>
+</html>

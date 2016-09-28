@@ -1,0 +1,62 @@
+<link rel="import" href="../js/bower_components/polymer/polymer.html">
+<link rel="import" href="../js/bower_components/paper-elements/paper-elements.html">
+
+
+<dom-module id="login-element">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <paper-input label="Enter Emails" id="input_email"></paper-input>
+        <paper-input label="Enter Password" type="password" id="input_pword"></paper-input>
+        <paper-button on-tap="signIn">Login</paper-button>
+        <paper-button on-tap="createAccount">Create User</paper-button>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'login-element',
+
+            created : function(){
+                this.loginDetails = {
+                    email : "",
+                    pass : ""
+                };
+            },
+            
+            signIn : function () {
+                var name = this.$.input_email.value;
+                var password = this.$.input_email.value;
+
+                if( name != "" && password != ""){
+                    this.loginDetails.email = name;
+                    this.loginDetails.pass = password;
+                    alert(this.loginDetails.email);
+
+                    $.ajax({
+                        url: 'gm-polymer.herokuapp.com/',
+                        type: 'POST',
+                        data: { user: 'email', login: 'pass'},
+
+                        success: function(data){
+                            //var data = JSON.parse(jsondata);
+                            console.log(data);
+                        },
+                        error: function (req, status, error) {
+                            alert("Error logging in");
+                        }
+                    });
+
+                }
+            },
+
+            createAccount : function(){
+                this.fire('changePage');
+            }
+
+        });
+    </script>
+</dom-module>

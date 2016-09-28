@@ -1,0 +1,79 @@
+<link rel="import" href="../js/bower_components/polymer/polymer.html">
+<link rel="import" href="../js/bower_components/paper-elements/paper-elements.html">
+
+<dom-module id="signup-element">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <paper-button on-tap="goBack">Go Back</paper-button>
+        <paper-input label="Enter Full Name" id="input_fname" value="Paul"></paper-input>
+        <paper-input label="Enter Username" id="input_uname" value="paul"></paper-input>
+        <paper-input label="Enter Email" type="email" id="input_email" value="paulcostello11@gmail.com"></paper-input>
+        <paper-input label="Enter Password" type="password" id="input_password" value="paul"></paper-input>
+        <paper-button on-tap="createAccount">Create Account</paper-button>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: 'signup-element',
+
+            created: function () {
+                this.signupDetails = {
+                    fname: "",
+                    uname: "",
+                    email: "",
+                    passwd: ""
+                };
+            },
+
+            createAccount: function () {
+
+                var vfName = this.$.input_fname.value;
+                var vuName = this.$.input_uname.value;
+                var vEmail = this.$.input_email.value;
+                var vPassword = this.$.input_password.value;
+
+                if (vfName == "" || vuName == "" || vEmail == "" || vPassword == "") {
+                    alert("Please enter all required details");
+                }
+                else {
+                    this.signupDetails.fname = vfName;
+                    this.signupDetails.uname = vuName;
+                    this.signupDetails.email = vEmail;
+                    this.signupDetails.passwd = vPassword;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'https://gm-polymer.herokuapp.com/',
+                        data: JSON.stringify( {fname: vfName, uname: vuName, email: vEmail, passwd: vPassword}),
+                        dataType: "json",
+                        contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+                        crossDomain: true,
+
+                        success: function (result) {
+                            alert(result.data);
+                        },
+                        //complete: function (jqXHR, textStatus) {
+                        //},
+                        error: function (req, status, error) {
+                            alert(error + " error");
+                        }
+                    });
+
+
+                }
+
+
+            },
+
+            goBack: function () {
+                this.fire('goSignin');
+            }
+
+        });
+    </script>
+</dom-module>
